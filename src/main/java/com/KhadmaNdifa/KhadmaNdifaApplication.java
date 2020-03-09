@@ -22,9 +22,11 @@ public class KhadmaNdifaApplication {
             accountService.save(new com.KhadmaNdifa.entites.AppRole(null,"USER"));
             accountService.save(new com.KhadmaNdifa.entites.AppRole(null,"ADMIN"));
             Stream.of("user1","user2","user3","admin").forEach(un->{
+            	System.out.println("ajout de l'utilisteur : "+un);
                 accountService.saveUser(un,"1234","1234", "EUR");
             });
             accountService.addRoleToUser("admin","ADMIN");
+            System.out.println("ajouter le rol Admin a l'utilistaue admin : ");
         };
     }
     @Bean
