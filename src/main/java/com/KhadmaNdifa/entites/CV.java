@@ -1,27 +1,129 @@
 package com.KhadmaNdifa.entites;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import com.KhedmaNdifa.ParentEntities.AuditModel;;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import com.KhedmaNdifa.ParentEntities.AuditModel;
+import com.KhedmaNdifa.ParentEntities.Etatcivile;;
 
 @Entity
 public class CV  extends AuditModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long ID;
-	@OneToOne
-	@JoinColumn(name="id_Emploier")
+	private String designationCV;
+	public String getDesignationCV() {
+		return designationCV;
+	}
+	public void setDesignationCV(String designationCV) {
+		this.designationCV = designationCV;
+	}
+	private Etatcivile etatcivile;
+	private String nom;
+	private String prenom;
+	private String adress;
+    @ManyToMany(fetch = FetchType.EAGER)
+	private Collection<Deplome> deplomes=new ArrayList<>();
+  //  @ManyToMany(fetch = FetchType.EAGER)
+	//private Collection<Experiance> experiances=new ArrayList<>();
+   // @ManyToMany(fetch = FetchType.EAGER)
+ //	private Collection<Compitance> compitances=new ArrayList<>();
+    
+	public Collection<Deplome> getDeplomes() {
+		return deplomes;
+	}
+	public void setDeplomes(Collection<Deplome> deplomes) {
+		this.deplomes = deplomes;
+	}
+	public CV() {
+		super();
+	}
+
+	public CV(long iD, String designationCV, Etatcivile etatcivile, String nom, String prenom, String adress,
+			String email, String tel, Emploiyee emploiyee) {
+		super();
+		ID = iD;
+		this.designationCV = designationCV;
+		this.etatcivile = etatcivile;
+		this.nom = nom;
+		this.prenom = prenom;
+		this.adress = adress;
+		this.email = email;
+		Tel = tel;
+		this.emploiyee = emploiyee;
+	}
+	public long getID() {
+		return ID;
+	}
+	public void setID(long iD) {
+		ID = iD;
+	}
+	public Etatcivile getEtatcivile() {
+		return etatcivile;
+	}
+	public void setEtatcivile(Etatcivile etatcivile) {
+		this.etatcivile = etatcivile;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public String getPrenom() {
+		return prenom;
+	}
+	public void setPrenom(String prenom) {
+		this.prenom = prenom;
+	}
+	public String getAdress() {
+		return adress;
+	}
+	public void setAdress(String adress) {
+		this.adress = adress;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getTel() {
+		return Tel;
+	}
+	public void setTel(String tel) {
+		Tel = tel;
+	}
+	public Emploiyee getEmploiyee() {
+		return emploiyee;
+	}
+	public void setEmploiyee(Emploiyee emploiyee) {
+		this.emploiyee = emploiyee;
+	}
+	private String email;
+	private String Tel;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+	@JoinColumn(name="id_Emploiyee",nullable = false)
 	private Emploiyee emploiyee;
-	@OneToMany(mappedBy = "cV")
-	private Set<CV_Rebrique> cv_Rebriques;
 
 }

@@ -19,17 +19,46 @@ public class AppUser {
     private Long id;
     @Column(unique = true)
     private String username;
-    private Gender gender;
+    @Column(unique = true)
+    private String Email;
+	private Gender gender;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private boolean actived;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<AppRole> roles=new ArrayList<>();
-    
+
 	@Override
 	public String toString() {
-		return "AppUser [id=" + id + ", username=" + username + ", password=" + password + ", actived=" + actived + "]";
+		return "AppUser [id=" + id + ", username=" + username + ", Email=" + Email + ", Gender=" + gender +", password=" + password + ", actived=" + actived + "]";
 	}
+	
+	public AppUser(Long id, String username, String email, Gender gender, String password, boolean actived) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.Email = email;
+		this.gender = gender;
+		this.password = password;
+		this.actived = actived;
+	}
+	public AppUser() {
+		super();
+	}
+	
+    public String getEmail() {
+		return Email;
+	}
+	public void setEmail(String email) {
+		Email = email;
+	}
+	public Gender getGender() {
+		return gender;
+	}
+	public void setGender(Gender gender) {
+		this.gender = gender;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -60,18 +89,5 @@ public class AppUser {
 	public void setRoles(Collection<AppRole> roles) {
 		this.roles = roles;
 	}
-
-	
-	public AppUser(Long id, String username, String password, boolean actived) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.actived = actived;
-	}
-	public AppUser() {
-		super();
-	}
-    
     
 }

@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.KhadmaNdifa.Security.service.AccountService;
 import com.KhadmaNdifa.entites.AppUser;
+import com.KhadmaNdifa.service.AccountService;
 
 import java.util.ArrayList;
 import java.util.Collection;
