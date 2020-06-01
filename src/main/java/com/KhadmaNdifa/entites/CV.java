@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -40,19 +41,12 @@ public class CV  extends AuditModel{
 	private String nom;
 	private String prenom;
 	private String adress;
-    @ManyToMany(fetch = FetchType.EAGER)
-	private Collection<Deplome> deplomes=new ArrayList<>();
   //  @ManyToMany(fetch = FetchType.EAGER)
 	//private Collection<Experiance> experiances=new ArrayList<>();
    // @ManyToMany(fetch = FetchType.EAGER)
  //	private Collection<Compitance> compitances=new ArrayList<>();
     
-	public Collection<Deplome> getDeplomes() {
-		return deplomes;
-	}
-	public void setDeplomes(Collection<Deplome> deplomes) {
-		this.deplomes = deplomes;
-	}
+
 	public CV() {
 		super();
 	}

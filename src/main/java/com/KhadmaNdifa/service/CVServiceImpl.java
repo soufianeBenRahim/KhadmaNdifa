@@ -1,5 +1,6 @@
 package com.KhadmaNdifa.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,21 +16,36 @@ import com.KhadmaNdifa.dao.EmploiyeeRepository;
 import com.KhadmaNdifa.dao.ExperianceRepository;
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
+import com.KhadmaNdifa.entites.CvGlobale;
 import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.entites.Emploiyee;
 import com.KhadmaNdifa.entites.Experiance;
 @Service
 public class CVServiceImpl implements CVService {
-@Autowired
+
 private CVsRepository cVRepository;
-@Autowired
+
 private DeplomeRepository deplomeRepository;
-@Autowired
+
 private ExperianceRepository experianceRepository;
-@Autowired
+
 private CompitanceRepository compitanceRepository;
-@Autowired
+
 private EmploiyeeRepository emploiyeeRepository;
+
+
+	@Autowired
+	public CVServiceImpl(CVsRepository cVRepository, DeplomeRepository deplomeRepository,
+		ExperianceRepository experianceRepository, CompitanceRepository compitanceRepository,
+		EmploiyeeRepository emploiyeeRepository) {
+	super();
+	this.cVRepository = cVRepository;
+	this.deplomeRepository = deplomeRepository;
+	this.experianceRepository = experianceRepository;
+	this.compitanceRepository = compitanceRepository;
+	this.emploiyeeRepository = emploiyeeRepository;
+}
+
 	@Override
 	public CV SaveCV(CV cv) {
 		
@@ -48,10 +64,23 @@ private EmploiyeeRepository emploiyeeRepository;
 		return cVRepository.findById(id).get();
 	}
 	@Override
-	public List<CV> GetCVByidEmploiyee(long idEmploiyee){
+	public List<CvGlobale> GetCVByidEmploiyee(long idEmploiyee){
 		System.out.println("Cv service GetCVByidEmploiyee :: idemploiyee ="+idEmploiyee);
 		Emploiyee emp =emploiyeeRepository.findById(idEmploiyee).get();
-		return cVRepository.findAllByEmploiyee(emp);
+		List<CV> cvs= cVRepository.findAllByEmploiyee(emp);
+		List<CvGlobale> cvToReturn=new ArrayList<CvGlobale>();
+		cvs.forEach((cv)->{
+				CvGlobale  cvg= new CvGlobale();
+				cvg.setCv(cv);
+				List<Deplome> deplomes=deplomeRepository.findAllByCv(cv);
+				cvg.setDeplomes(deplomes);
+				List<Compitance> compitances=compitanceRepository.findAllBycv(cv);
+				cvg.setCompitances(compitances);
+				List<Experiance> experiances=experianceRepository.findAllBycv(cv);
+				cvg.setExperiances(experiances);
+				cvToReturn.add(cvg);
+		});
+		return cvToReturn;
 	}
 
 
@@ -81,14 +110,15 @@ private EmploiyeeRepository emploiyeeRepository;
 		deplome.setCv(cv);
 		deplome.setCreatedAt(new Date());
 		deplome.setUpdatedAt(new Date());
-		cv.getDeplomes().add(deplome);
-			Deplome dep=	deplomeRepository.save(deplome);
-			return dep;
+		return deplomeRepository.save(deplome);
+		
 		
 	}
 	@Override
-	public void deleteDeplom(long id) {
+	public Deplome deleteDeplom(long id) {
+		Deplome d=this.deplomeRepository.findById(id).get();
 		this.deplomeRepository.deleteById(id);
+		return d;
 	};
 	// compitance 
 	@Override
@@ -98,7 +128,16 @@ private EmploiyeeRepository emploiyeeRepository;
 			Compitance comp=compitanceRepository.save(compitance);
 		
 	}
-	
+	public List<Compitance> GetCompitanceFromCV(Long id){
+		System.out.println("recumeration le cv de id  ="+id);
+		CV cv =cVRepository.findById(id).get();
+		System.out.println("recumeration le des compitances de cv   ="+id);
+		return compitanceRepository.findAllBycv(cv);
+	}
+	public void deleteCompitance(long id) {
+		this.compitanceRepository.deleteById(id);
+	}
+	// Experiance
 	@Override
 	public void AddExperianceToCV(Experiance experiance, long idCV) {
 		
@@ -107,5 +146,6 @@ private EmploiyeeRepository emploiyeeRepository;
 		Experiance exp=	experianceRepository.save(experiance );
 
 	}
+	
 
 }

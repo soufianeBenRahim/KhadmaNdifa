@@ -1,6 +1,7 @@
 package com.KhadmaNdifa.entites;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -15,10 +16,10 @@ public class Deplome extends AuditModel{
 private Long Id;
 private int annee;
 private int mois;
-private String Description;
-private String Organisataion;
+private String description;
+private String organisataion;
 @ManyToOne
-@JoinColumn(name = "id_Cv")
+@JoinColumn(name="id_Cv", nullable=false)
 private CV cv;
 public Long getId() {
 	return Id;
@@ -39,16 +40,16 @@ public void setMois(int mois) {
 	this.mois = mois;
 }
 public String getDescription() {
-	return Description;
+	return description;
 }
 public void setDescription(String description) {
-	Description = description;
+	this.description = description;
 }
 public String getOrganisataion() {
-	return Organisataion;
+	return organisataion;
 }
 public void setOrganisataion(String organistaion) {
-	Organisataion = organistaion;
+	this.organisataion = organistaion;
 }
 public CV getCv() {
 	return cv;
@@ -61,8 +62,8 @@ public Deplome(Long id, int annee, int mois, String description, String organisa
 	Id = id;
 	this.annee = annee;
 	this.mois = mois;
-	Description = description;
-	Organisataion = organisataion;
+	this.description = description;
+	this.organisataion = organisataion;
 	this.cv = cv;
 }
 public Deplome() {

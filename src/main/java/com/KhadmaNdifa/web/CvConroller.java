@@ -3,11 +3,14 @@ package com.KhadmaNdifa.web;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
+import javax.management.RuntimeErrorException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,28 +18,48 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.KhadmaNdifa.dao.CVsRepository;
+
 
 import com.KhadmaNdifa.entites.CV;
+import com.KhadmaNdifa.entites.Compitance;
+import com.KhadmaNdifa.entites.CvGlobale;
 import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.service.CVService;
 
-@RestController
+
+@Controller
 @RequestMapping(path = "/CVs")
 public class CvConroller {
 
 	@Autowired
+	public CvConroller(CVService _cvService) {
+		this.cvService=_cvService;
+	}
 	CVService cvService;
 	@GetMapping("/CVsUser")
-	public ResponseEntity<List<CV>> getCVofUser(@RequestParam(required = false) Long id){
+	ResponseEntity<List<CvGlobale>> getCVofUser(@RequestParam(required = false) Long id){
      	 try {
-		      List<CV> CVs = new ArrayList<CV>();
+		      List<CvGlobale> CVs = new ArrayList<CvGlobale>();
 
 		      if (id != null) {
-		    	  cvService.GetCVByidEmploiyee(id).forEach((cvelement)->{CVs.add(cvelement);System.out.println("le cv selectionnee "+cvelement.getDesignationCV());});
+		    	  cvService.GetCVByidEmploiyee(id).forEach((cvelement)->
+		    	  {
+		    		  CVs.add(cvelement);
+		    		  System.out.println(cvelement.getCv().getDesignationCV());
+		    		  cvelement.getDeplomes().forEach((deplome)->
+		    		  {
+		    			  System.out.println(deplome.getDescription());  
+		    		  });
+		    		  cvelement.getCompitances().forEach((comp)->
+		    		  {
+		    			  System.out.println(comp.getDescription());  
+		    		  });
+		    	  });
 	
 		      }
 		      if (CVs.isEmpty()) {
@@ -51,7 +74,7 @@ public class CvConroller {
 
 
 	  @GetMapping("/{id}")
-	  public ResponseEntity<CV> getCVById(@PathVariable("id") long idCV) {
+	  ResponseEntity<CV> getCVById(@PathVariable("id") long idCV) {
 	    Optional<CV> CvData = cvService.FindById(idCV);
 
 	    if (CvData.isPresent()) {
@@ -62,7 +85,7 @@ public class CvConroller {
 	  }
 	
 	  @PostMapping("/")
-	  public ResponseEntity<CV> createCV(@RequestBody CV cv) {
+	  ResponseEntity<CV> createCV(@RequestBody CV cv) {
 	    try {
 	      CV _cv = cvService.SaveCV(cv);
 	      return new ResponseEntity<>(_cv, HttpStatus.CREATED);
@@ -72,7 +95,7 @@ public class CvConroller {
 	  }
 
 	  @PutMapping("/update/{id}")
-	  public ResponseEntity<CV> updateCV(@PathVariable("id") long id, @RequestBody CV cv) {
+	  ResponseEntity<CV> updateCV(@PathVariable("id") long id, @RequestBody CV cv) {
 	    Optional<CV> cvData = cvService.FindById(id);
 	    if (cvData.isPresent()) {
 	      CV _cv = cvData.get();
@@ -90,7 +113,7 @@ public class CvConroller {
 	  }
 	
 	  @DeleteMapping("/{id}")
-	  public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("id") long id) {
+	  ResponseEntity<HttpStatus> deleteCv(@PathVariable("id") long id) {
 	    try {
 	      cvService.DeleteCVById(id);
 	      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -98,31 +121,33 @@ public class CvConroller {
 	      return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 	    }
 	  }
-//// deplomes
-	  @PostMapping("/adddeplome")
-	  public ResponseEntity<Deplome> addDeplomeToCV(@RequestBody Deplome deplome,@RequestParam long id) {
+// deplomes
+	    @PutMapping(value = "/adddeplome")
+	    @ResponseBody
+	    public ResponseEntity<Deplome>  addDeplomeToCV(@RequestBody Deplome deplome,@RequestParam Long id) {
 	    try {
-	    	System.out.println(" id cv recupperer :"+id);
-	    	System.out.println(deplome.getDescription());
-	    	System.out.println(deplome.getOrganisataion());
-	    	System.out.println(deplome.getAnnee());
-	    	System.out.println(deplome.getMois());
-	    	System.out.println(deplome.getDescription());
-	    	System.out.println(deplome.getDescription());
-	  //    Deplome _depolme = cvService.AddDeplomeToCV(deplome,id);
-	      return new ResponseEntity<>(deplome, HttpStatus.CREATED);
+	    	try {
+		    	Deplome d= cvService.AddDeplomeToCV(deplome,id);
+		    	if(d!=null) {
+		    		return new ResponseEntity(d, HttpStatus.OK);
+		    	}else {
+		    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		    	}
+	    	}catch (Exception e) {
+			      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 	    } catch (Exception e) {
-	      return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
+	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 	    }
 	  }
 	  
-		@GetMapping("/{id}/deplomes")
-		public ResponseEntity<List<Deplome>> getDeplomesFromCV(@PathVariable(required = false) Long id){
+		@GetMapping("/{idCv}/deplomes")
+		public ResponseEntity<List<Deplome>> getDeplomesFromCV(@PathVariable(required = false) Long idCv){
 	     	 try {
 			      List<Deplome> deplomes = new ArrayList<Deplome>();
 
-			      if (id != null) {
-			    	  cvService.GetDeplomesFromCv(id).forEach((dep)->{
+			      if (idCv != null) {
+			    	  cvService.GetDeplomesFromCv(idCv).forEach((dep)->{
 			    		  deplomes.add(dep);
 			    	  }
 			    	  );
@@ -137,16 +162,49 @@ public class CvConroller {
 			      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 			    }
 		}
-		  @DeleteMapping("/deplomes/{idDeplomes}/delete")
-		  public ResponseEntity<HttpStatus> deleteDeplome(@PathVariable("idDeplomes") long id) {
-		    try {
-		    	System.out.println("delete deplome n ° "+id);
-		      cvService.deleteDeplom(id);
-		      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		@DeleteMapping("/deplomes/{idDeplomes}/delete")
+		public ResponseEntity<Deplome> deleteDeplome(@PathVariable("idDeplomes") long idDeplomes) {
+		try {
+		      System.out.println("delete deplome n ° "+idDeplomes);
+ 		      Deplome Diplome =cvService.deleteDeplom(idDeplomes);
+		      if (Diplome !=null ) {
+		        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		      }
+		      return new ResponseEntity(Diplome, HttpStatus.OK);
 		    } catch (Exception e) {
-		      return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 		  }
-		
+		// copitances
+			@GetMapping("/{idCv}/compitances")
+			public ResponseEntity<List<Compitance>> getCompitancesFromCV(@PathVariable(required = false) Long idCv){
+		     	 try {
+				      List<Compitance> compitances = new ArrayList<Compitance>();
 
+				      if (idCv != null) {
+				    	  cvService.GetCompitanceFromCV(idCv).forEach((comp)->{
+				    		  compitances.add(comp);
+				    	  }
+				    	  );
+			
+				      }
+				      if (compitances.isEmpty()) {
+				        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				      }
+			    	  
+				      return new ResponseEntity(compitances, HttpStatus.OK);
+				    } catch (Exception e) {
+				      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+				    }
+			}
+			  @DeleteMapping("/compitances/{idCompitance}/delete")
+			  public ResponseEntity<HttpStatus> deleteCompitance(@PathVariable("idCompitance") long idCompitance) {
+			    try {
+			    	System.out.println("delete deplome n ° "+idCompitance);
+			      cvService.deleteCompitance(idCompitance);
+			      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			    } catch (Exception e) {
+			      return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+			    }
+			  }
 }

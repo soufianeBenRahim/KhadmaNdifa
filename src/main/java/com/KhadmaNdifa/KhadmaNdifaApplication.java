@@ -13,8 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.KhadmaNdifa.dao.DeplomeRepository;
 import com.KhadmaNdifa.dao.EmploiyeeRepository;
 import com.KhadmaNdifa.entites.CV;
+import com.KhadmaNdifa.entites.Compitance;
 import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.entites.Emploiyee;
+import com.KhadmaNdifa.entites.Experiance;
 import com.KhadmaNdifa.service.CVService;
 import com.KhedmaNdifa.ParentEntities.Etatcivile;
 import com.KhedmaNdifa.ParentEntities.Gender;
@@ -85,6 +87,21 @@ public class KhadmaNdifaApplication {
            deplome2.setCreatedAt(new Date());
            deplome2.setUpdatedAt(new Date());
            cvService.AddDeplomeToCV(deplome2, newCv2.getID());
+           Experiance exper1 = new  Experiance();
+           exper1.setAnneeDebut(2001);
+           exper1.setAnneeFin(2005);
+           exper1.setCreatedAt(new Date());
+           exper1.setCurent(false);;
+           exper1.setDescription("devloppeur");
+           exper1.setMoisDebut(1);
+           exper1.setMoisFin(5);
+           exper1.setOrganisation("XpertSoft");
+           exper1.setUpdatedAt(new Date());
+           cvService.AddExperianceToCV(exper1, newCv2.getID());
+           Compitance comp1=new Compitance();
+           comp1.setDescription("C#");
+           comp1.setPourcentage(100);
+           cvService.AddCompitanceToCV(comp1, newCv2.getID());           
         };
     }
     @Bean
