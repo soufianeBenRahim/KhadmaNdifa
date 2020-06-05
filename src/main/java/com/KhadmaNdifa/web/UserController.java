@@ -38,6 +38,7 @@ public class UserController {
     }
     @GetMapping("/GetUserByID")
     public AppUser getUserById(@RequestParam Long id){
+    	System.out.println("appel de la methode GetUserByID pram id ="+id);
         return  accountService.GetUserByID(id);
     }
 }
