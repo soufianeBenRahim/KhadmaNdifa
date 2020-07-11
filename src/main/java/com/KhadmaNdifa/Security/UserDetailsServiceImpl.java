@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.service.AccountService;
 
+import java.awt.List;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -22,12 +23,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUser=accountService.loadUserByUsername(username);
-        if(appUser==null) throw new UsernameNotFoundException("invalid user");
+    	java.util.List<AppUser> appUse=accountService.loadUserByUsername(username);
+        if(appUse==null) throw new UsernameNotFoundException("invalid user");
         Collection<GrantedAuthority> authorities=new ArrayList<>();
-        appUser.getRoles().forEach(r->{
+        appUse.get(1).getRoles().forEach(r->{
             authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
         });
-        return new User(appUser.getUsername(),appUser.getPassword(),authorities);
+        return new User(appUse.get(1).getUsername(),appUse.get(1).getPassword(),authorities);
     }
 }

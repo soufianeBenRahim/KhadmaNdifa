@@ -3,6 +3,7 @@ package com.KhadmaNdifa.web;
 
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class UserController {
     }
     
     @GetMapping("/GetUserByName")
-    public AppUser getUserByName(@RequestParam String name){
+    public List<AppUser> getUserByName(@RequestParam String name){
         return  accountService.loadUserByUsername(name);
     }
     @GetMapping("/GetUserByID")

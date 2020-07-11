@@ -5,7 +5,11 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import org.springframework.stereotype.Repository;
 
 import com.KhadmaNdifa.entites.AppUser;
+import java.lang.String;
+import java.util.ArrayList;
+import java.util.List;
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser,Long> {
-    public AppUser findByUsername(String username);
+ 
+    List<AppUser> findByUsername(String username);
 }

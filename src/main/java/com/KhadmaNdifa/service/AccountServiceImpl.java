@@ -1,5 +1,6 @@
 package com.KhadmaNdifa.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -37,8 +38,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AppUser saveUser(String username,String Email,Gender Gender, String password, String confirmedPassword,String TypeUser) {
-        AppUser  user=appUserRepository.findByUsername(username);
-        if(user!=null) throw new RuntimeException("User already exists");
+        List<AppUser>  users=appUserRepository.findByUsername(username);
+        if(users!=null) throw new RuntimeException("User already exists");
         if(!password.equals(confirmedPassword)) throw new RuntimeException("Please confirm your password");
         System.out.println(TypeUser);
         if("EUR".equals(TypeUser)) {
@@ -69,15 +70,15 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AppUser loadUserByUsername(String username) {
+    public List<AppUser> loadUserByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }
 
     @Override
     public void addRoleToUser(String username, String rolename) {
-        AppUser appUser=appUserRepository.findByUsername(username);
+        List<AppUser> appUser=appUserRepository.findByUsername(username);
         AppRole appRole=appRoleRepository.findByRoleName(rolename);
-        appUser.getRoles().add(appRole);
+        if(appUser!=null) appUser.get(0).getRoles().add(appRole);
     }
     public void delletAll() 
     {
