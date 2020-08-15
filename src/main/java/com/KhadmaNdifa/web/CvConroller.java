@@ -29,6 +29,7 @@ import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
 import com.KhadmaNdifa.entites.CvGlobale;
 import com.KhadmaNdifa.entites.Deplome;
+import com.KhadmaNdifa.entites.Experiance;
 import com.KhadmaNdifa.service.CVService;
 
 
@@ -122,8 +123,7 @@ public class CvConroller {
 	    }
 	  }
 // deplomes
-	    @PutMapping(value = "/adddeplome")
-	    @ResponseBody
+	    @PostMapping(value = "/adddeplome")
 	    public ResponseEntity<Deplome>  addDeplomeToCV(@RequestBody Deplome deplome,@RequestParam Long id) {
 	    try {
 	    	try {
@@ -175,6 +175,42 @@ public class CvConroller {
 		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 		    }
 		  }
+		
+		
+		// experiances
+	    @PostMapping(value = "/adddExperiance")
+	    public ResponseEntity<Experiance>  addEperianceToCV(@RequestBody Experiance experiance,@RequestParam Long id) {
+	    try {
+	    	try {
+		    	Experiance exp= cvService.AddExperianceToCV(experiance, id);
+		    	if(exp!=null) {
+		    		return new ResponseEntity(exp, HttpStatus.OK);
+		    	}else {
+		    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		    	}
+	    	}catch (Exception e) {
+			      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+	    } catch (Exception e) {
+	      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	  }
+	  
+			@DeleteMapping("/Eperiance/{idExperiance}/delete")
+		public ResponseEntity<Experiance> deleteExperiance(@PathVariable("idExperiance") long idExperiance) {
+		try {
+		      System.out.println("delete expeiance n ° "+idExperiance);
+ 		      Experiance experiance =cvService.deleteExperiance(idExperiance);
+		      if (experiance !=null ) {
+		        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		      }
+		      return new ResponseEntity(experiance, HttpStatus.OK);
+		    } catch (Exception e) {
+		      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+		    }
+		  }
+		
+		
 		// copitances
 			@GetMapping("/{idCv}/compitances")
 			public ResponseEntity<List<Compitance>> getCompitancesFromCV(@PathVariable(required = false) Long idCv){

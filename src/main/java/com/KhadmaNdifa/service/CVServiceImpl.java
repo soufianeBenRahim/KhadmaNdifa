@@ -139,12 +139,21 @@ private EmploiyeeRepository emploiyeeRepository;
 	}
 	// Experiance
 	@Override
-	public void AddExperianceToCV(Experiance experiance, long idCV) {
-		
-	CV cv=cVRepository.findById(idCV).get();
-	experiance.setCv(cv);
+	public Experiance AddExperianceToCV(Experiance experiance, long idCV) {
+		CV cv=cVRepository.findById(idCV).get();
+		experiance.setCv(cv);
+		experiance.setCreatedAt(new Date());
+		experiance.setUpdatedAt(new Date());
 		Experiance exp=	experianceRepository.save(experiance );
+		return exp;
+	}
+	
 
+	@Override
+	public Experiance deleteExperiance(long id) {
+		Experiance exp=this.experianceRepository.findById(id).get();
+		experianceRepository.deleteById(id);
+		return exp;
 	}
 	
 
