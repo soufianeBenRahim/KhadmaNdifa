@@ -11,8 +11,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.metamodel.StaticMetamodel;
 import javax.validation.constraints.Max;
 
+import com.KhedmaNdifa.ParentEntities.AuditModel;
+
 @Entity
-public class Compitance {
+public class Compitance extends AuditModel{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long ID;

@@ -31,7 +31,7 @@ Experiance deleteExperiance(long id);
 Experiance AddExperianceToCV(Experiance experiance,long idCV);
 //compitance
 List<Compitance> GetCompitanceFromCV(Long id);
-void deleteCompitance(long id);
-void AddCompitanceToCV(Compitance compitance,long idCV);
+Compitance deleteCompitance(long id);
+Compitance AddCompitanceToCV(Compitance compitance,long idCV);
 
 }

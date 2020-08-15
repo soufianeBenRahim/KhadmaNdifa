@@ -122,10 +122,13 @@ private EmploiyeeRepository emploiyeeRepository;
 	};
 	// compitance 
 	@Override
-	public void AddCompitanceToCV(Compitance compitance, long idCV) {
+	public Compitance AddCompitanceToCV(Compitance compitance, long idCV) {
 		CV cv=cVRepository.findById(idCV).get();
 		compitance.setCv(cv);
+		compitance.setCreatedAt(new Date());
+		compitance.setUpdatedAt(new Date());
 			Compitance comp=compitanceRepository.save(compitance);
+			return comp;
 		
 	}
 	public List<Compitance> GetCompitanceFromCV(Long id){
@@ -134,8 +137,10 @@ private EmploiyeeRepository emploiyeeRepository;
 		System.out.println("recumeration le des compitances de cv   ="+id);
 		return compitanceRepository.findAllBycv(cv);
 	}
-	public void deleteCompitance(long id) {
+	public Compitance deleteCompitance(long id) {
+		Compitance c= this.compitanceRepository.findById(id).get();
 		this.compitanceRepository.deleteById(id);
+		return c;
 	}
 	// Experiance
 	@Override

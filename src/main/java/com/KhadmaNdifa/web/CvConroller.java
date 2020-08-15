@@ -211,7 +211,7 @@ public class CvConroller {
 		  }
 		
 		
-		// copitances
+		// compitances
 			@GetMapping("/{idCv}/compitances")
 			public ResponseEntity<List<Compitance>> getCompitancesFromCV(@PathVariable(required = false) Long idCv){
 		     	 try {
@@ -233,6 +233,8 @@ public class CvConroller {
 				      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
 				    }
 			}
+			
+
 			  @DeleteMapping("/compitances/{idCompitance}/delete")
 			  public ResponseEntity<HttpStatus> deleteCompitance(@PathVariable("idCompitance") long idCompitance) {
 			    try {
@@ -243,4 +245,20 @@ public class CvConroller {
 			      return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 			    }
 			  }
+			  
+			    @PostMapping(value = "/addCompmitance")
+			    public ResponseEntity<Compitance>  addCompitance(@RequestBody Compitance compitance,@RequestParam Long idCV) {
+			    	try {
+				    	Compitance com= cvService.AddCompitanceToCV(compitance, idCV);
+				    	if(com!=null) {
+				    		return new ResponseEntity(com, HttpStatus.OK);
+				    	}else {
+				    		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+				    	}
+			    	}catch (Exception e) {
+					      return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+					}
+
+			  }
+			  
 }
