@@ -32,7 +32,7 @@ import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.service.CVService;
 
 
-@Controller
+@RestController
 @RequestMapping(path = "/CVs")
 public class CvConroller {
 
@@ -75,7 +75,7 @@ public class CvConroller {
 
 	  @GetMapping("/{id}")
 	  ResponseEntity<CV> getCVById(@PathVariable("id") long idCV) {
-	    Optional<CV> CvData = cvService.FindById(idCV);
+	    Optional<CV> CvData = cvService.FindById(idCV );
 
 	    if (CvData.isPresent()) {
 	      return new ResponseEntity<>(CvData.get(), HttpStatus.OK);

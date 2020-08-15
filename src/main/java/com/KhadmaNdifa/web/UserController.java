@@ -35,7 +35,9 @@ public class UserController {
     
     @GetMapping("/GetUserByName")
     public List<AppUser> getUserByName(@RequestParam String name){
-        return  accountService.loadUserByUsername(name);
+    	List<AppUser> users=  accountService.loadUserByUsername(name);
+    	System.out.println(users);
+    	return users;
     }
     @GetMapping("/GetUserByID")
     public AppUser getUserById(@RequestParam Long id){

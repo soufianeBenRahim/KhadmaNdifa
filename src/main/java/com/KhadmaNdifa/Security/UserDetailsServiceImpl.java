@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.KhadmaNdifa.entites.AppRole;
 import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.service.AccountService;
 
@@ -26,9 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	java.util.List<AppUser> appUse=accountService.loadUserByUsername(username);
         if(appUse==null) throw new UsernameNotFoundException("invalid user");
         Collection<GrantedAuthority> authorities=new ArrayList<>();
-        appUse.get(1).getRoles().forEach(r->{
+        Collection<AppRole> roles =appUse.get(0).getRoles();
+        roles.forEach(r->{
             authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
         });
-        return new User(appUse.get(1).getUsername(),appUse.get(1).getPassword(),authorities);
+        return new User(appUse.get(0).getUsername(),appUse.get(0).getPassword(),authorities);
     }
 }

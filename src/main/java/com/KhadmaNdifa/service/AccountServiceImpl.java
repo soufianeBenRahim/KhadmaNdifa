@@ -39,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AppUser saveUser(String username,String Email,Gender Gender, String password, String confirmedPassword,String TypeUser) {
         List<AppUser>  users=appUserRepository.findByUsername(username);
-        if(users!=null) throw new RuntimeException("User already exists");
+        if(!users.isEmpty() ) throw new RuntimeException("User already exists");
         if(!password.equals(confirmedPassword)) throw new RuntimeException("Please confirm your password");
         System.out.println(TypeUser);
         if("EUR".equals(TypeUser)) {
