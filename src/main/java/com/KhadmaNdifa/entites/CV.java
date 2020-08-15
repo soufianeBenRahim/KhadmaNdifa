@@ -51,18 +51,25 @@ public class CV  extends AuditModel{
 		super();
 	}
 
-	public CV(long iD, String designationCV, Etatcivile etatcivile, String nom, String prenom, String adress,
-			String email, String tel, Emploiyee emploiyee) {
-		super();
-		ID = iD;
-		this.designationCV = designationCV;
-		this.etatcivile = etatcivile;
-		this.nom = nom;
-		this.prenom = prenom;
-		this.adress = adress;
-		this.email = email;
-		Tel = tel;
-		this.emploiyee = emploiyee;
+
+	public CV(long iD, String designationCV, Etatcivile etatcivile, String nom, String prenom, String adress, String email,
+		String tel, AppUser user) {
+	super();
+	ID = iD;
+	this.designationCV = designationCV;
+	this.etatcivile = etatcivile;
+	this.nom = nom;
+	this.prenom = prenom;
+	this.adress = adress;
+	this.email = email;
+	Tel = tel;
+	this.user = user;
+}
+	public AppUser getUser() {
+		return user;
+	}
+	public void setUser(AppUser user) {
+		this.user = user;
 	}
 	public long getID() {
 		return ID;
@@ -106,18 +113,13 @@ public class CV  extends AuditModel{
 	public void setTel(String tel) {
 		Tel = tel;
 	}
-	public Emploiyee getEmploiyee() {
-		return emploiyee;
-	}
-	public void setEmploiyee(Emploiyee emploiyee) {
-		this.emploiyee = emploiyee;
-	}
+
 	private String email;
 	private String Tel;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
 	@JoinColumn(name="id_Emploiyee",nullable = false)
-	private Emploiyee emploiyee;
+	private AppUser user;
 
 }

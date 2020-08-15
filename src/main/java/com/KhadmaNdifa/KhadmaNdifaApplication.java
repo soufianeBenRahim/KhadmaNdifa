@@ -10,16 +10,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.KhadmaNdifa.dao.DeplomeRepository;
-import com.KhadmaNdifa.dao.EmploiyeeRepository;
+import com.KhadmaNdifa.dao.AppUserRepository;
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
 import com.KhadmaNdifa.entites.Deplome;
-import com.KhadmaNdifa.entites.Emploiyee;
 import com.KhadmaNdifa.entites.Experiance;
 import com.KhadmaNdifa.service.CVService;
 import com.KhedmaNdifa.ParentEntities.Etatcivile;
-import com.KhedmaNdifa.ParentEntities.Gender;
+import com.KhedmaNdifa.ParentEntities.TypeUser;
 
 @SpringBootApplication
 public class KhadmaNdifaApplication {
@@ -29,14 +27,14 @@ public class KhadmaNdifaApplication {
 	}
     @Bean
     CommandLineRunner start(com.KhadmaNdifa.service.AccountService accountService,CVService cvService,
-    		EmploiyeeRepository emploiyeeRepository){
+    		AppUserRepository emploiyeeRepository){
         return args->{
         	accountService.delletAll();
             accountService.save(new com.KhadmaNdifa.entites.AppRole(null,"USER"));
             accountService.save(new com.KhadmaNdifa.entites.AppRole(null,"ADMIN"));
             Stream.of("user1","user2","user3","admin").forEach(un->{
             	System.out.println("ajout de l'utilisteur : "+un);
-                accountService.saveUser(un,un+"@gmail.com",null,"1234","1234", "EE");
+                accountService.saveUser(un,un+"@gmail.com",null,"1234","1234", TypeUser.EE);
             });
             accountService.addRoleToUser("admin","ADMIN");
             System.out.println("ajouter le rol Admin a l'utilistaue admin : ");
@@ -51,7 +49,7 @@ public class KhadmaNdifaApplication {
             newCv.setUpdatedAt(new Date());
             emploiyeeRepository.findByUsername("admin").forEach(emp -> {
             	System.out.println(emp.toString());
-            	newCv.setEmploiyee(emp);
+            	newCv.setUser(emp);
               });
             newCv.setEtatcivile(Etatcivile.CELEBATAIRE);
             newCv.setTel("0666666666");
@@ -66,7 +64,7 @@ public class KhadmaNdifaApplication {
             newCv2.setUpdatedAt(new Date());
             emploiyeeRepository.findByUsername("admin").forEach(emp -> {
             	System.out.println(emp.toString());
-            	newCv2.setEmploiyee(emp);
+            	newCv2.setUser(emp);
               });
             newCv2.setEtatcivile(Etatcivile.MARIEE);
             newCv2.setTel("066666666622");

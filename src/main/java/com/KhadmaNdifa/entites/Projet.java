@@ -34,7 +34,7 @@ public Projet() {
 }
 
 public Projet(long iD, String description, AppUser createdBy, Date datePostilation, Date dateFin, double budjet,
-		EtatProjet etat, double pourcentage, Emploiyeur emploiyeur, Set<Emploiyee> emploiyees) {
+		EtatProjet etat, double pourcentage, AppUser emploiyeur, Set<AppUser> emploiyees) {
 	super();
 	this.iD = iD;
 	this.description = description;
@@ -112,25 +112,25 @@ public void setPourcentage(double pourcentage) {
 	this.pourcentage = pourcentage;
 }
 
-public Emploiyeur getEmploiyeur() {
+public AppUser getEmploiyeur() {
 	return emploiyeur;
 }
 
-public void setEmploiyeur(Emploiyeur emploiyeur) {
+public void setEmploiyeur(AppUser emploiyeur) {
 	this.emploiyeur = emploiyeur;
 }
 
-public Set<Emploiyee> getEmploiyees() {
+public Set<AppUser> getEmploiyees() {
 	return emploiyees;
 }
 
-public void setEmploiyees(Set<Emploiyee> emploiyees) {
+public void setEmploiyees(Set<AppUser> emploiyees) {
 	this.emploiyees = emploiyees;
 }
 
 @ManyToOne
 @JoinColumn(name = "id_emploiyeur")
-private Emploiyeur emploiyeur;
+private AppUser emploiyeur;
 
 @ManyToMany(fetch = FetchType.LAZY)
 @JoinTable(name = "PROJET_EMPLOIYEE",
@@ -140,6 +140,6 @@ joinColumns = {
 inverseJoinColumns = {
         @JoinColumn(name = "emploiyee_Id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
-private Set<Emploiyee> emploiyees;
+private Set<AppUser> emploiyees;
 
 }

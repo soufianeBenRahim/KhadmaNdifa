@@ -19,7 +19,7 @@ private long Id;
 public NoteEmployeur() {
 	super();
 }
-public NoteEmployeur(long id, @Max(5) int note, Projet projet, Emploiyee emploiyee) {
+public NoteEmployeur(long id, @Max(5) int note, Projet projet, AppUser emploiyee) {
 	super();
 	Id = id;
 	this.note = note;
@@ -44,10 +44,10 @@ public Projet getProjet() {
 public void setProjet(Projet projet) {
 	this.projet = projet;
 }
-public Emploiyee getEmploiyee() {
+public AppUser getEmploiyee() {
 	return emploiyee;
 }
-public void setEmploiyee(Emploiyee emploiyee) {
+public void setEmploiyee(AppUser emploiyee) {
 	this.emploiyee = emploiyee;
 }
 @Max(value = 5)
@@ -56,5 +56,5 @@ private int note;
 private Projet projet;
 @ManyToOne
 @JoinColumn(name="id_Emploiyee")
-private Emploiyee emploiyee;
+private AppUser emploiyee;
 }

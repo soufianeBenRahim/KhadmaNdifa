@@ -1,6 +1,7 @@
 package com.KhadmaNdifa.entites;
 
 import com.KhedmaNdifa.ParentEntities.Gender;
+import com.KhedmaNdifa.ParentEntities.TypeUser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
@@ -11,8 +12,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "TypeUser",discriminatorType = DiscriminatorType.STRING,length = 4)
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,13 +26,21 @@ public class AppUser {
     private boolean actived;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<AppRole> roles=new ArrayList<>();
-
+    private TypeUser typeuser;
 	@Override
 	public String toString() {
 		return "AppUser [id=" + id + ", username=" + username + ", Email=" + Email + ", Gender=" + gender +", password=" + password + ", actived=" + actived + "]";
 	}
 	
-	public AppUser(Long id, String username, String email, Gender gender, String password, boolean actived) {
+	public TypeUser getTypeuser() {
+		return typeuser;
+	}
+
+	public void setTypeuser(TypeUser typeuser) {
+		this.typeuser = typeuser;
+	}
+
+	public AppUser(Long id, String username, String email, Gender gender, String password, boolean actived,TypeUser _typeuser) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -41,6 +48,7 @@ public class AppUser {
 		this.gender = gender;
 		this.password = password;
 		this.actived = actived;
+		this.typeuser=_typeuser;
 	}
 	public AppUser() {
 		super();

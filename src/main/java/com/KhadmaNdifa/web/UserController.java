@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.service.AccountService;
 import com.KhedmaNdifa.ParentEntities.Gender;
+import com.KhedmaNdifa.ParentEntities.TypeUser;
 
 @RestController
 public class UserController {
@@ -58,7 +59,7 @@ class UserForm{
 	}
 	private String password;
     private String confirmedPassword;
-    private String typeUser;
+    private TypeUser typeUser;
     
 	public String getEmail() {
 		return Email;
@@ -66,10 +67,10 @@ class UserForm{
 	public void setEmail(String email) {
 		Email = email;
 	}
-	public String getTypeUser() {
+	public TypeUser getTypeUser() {
 		return typeUser;
 	}
-	public void setTypeUser(String typeUser) {
+	public void setTypeUser(TypeUser typeUser) {
 		this.typeUser = typeUser;
 	}
 	public String getUsername() {

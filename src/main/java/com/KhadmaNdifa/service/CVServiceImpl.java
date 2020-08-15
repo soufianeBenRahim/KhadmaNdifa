@@ -9,16 +9,16 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.KhadmaNdifa.dao.AppUserRepository;
 import com.KhadmaNdifa.dao.CVsRepository;
 import com.KhadmaNdifa.dao.CompitanceRepository;
 import com.KhadmaNdifa.dao.DeplomeRepository;
-import com.KhadmaNdifa.dao.EmploiyeeRepository;
 import com.KhadmaNdifa.dao.ExperianceRepository;
+import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
 import com.KhadmaNdifa.entites.CvGlobale;
 import com.KhadmaNdifa.entites.Deplome;
-import com.KhadmaNdifa.entites.Emploiyee;
 import com.KhadmaNdifa.entites.Experiance;
 @Service
 public class CVServiceImpl implements CVService {
@@ -31,13 +31,13 @@ private ExperianceRepository experianceRepository;
 
 private CompitanceRepository compitanceRepository;
 
-private EmploiyeeRepository emploiyeeRepository;
+private AppUserRepository emploiyeeRepository;
 
 
 	@Autowired
 	public CVServiceImpl(CVsRepository cVRepository, DeplomeRepository deplomeRepository,
 		ExperianceRepository experianceRepository, CompitanceRepository compitanceRepository,
-		EmploiyeeRepository emploiyeeRepository) {
+		AppUserRepository emploiyeeRepository) {
 	super();
 	this.cVRepository = cVRepository;
 	this.deplomeRepository = deplomeRepository;
@@ -66,8 +66,8 @@ private EmploiyeeRepository emploiyeeRepository;
 	@Override
 	public List<CvGlobale> GetCVByidEmploiyee(long idEmploiyee){
 		System.out.println("Cv service GetCVByidEmploiyee :: idemploiyee ="+idEmploiyee);
-		Emploiyee emp =emploiyeeRepository.findById(idEmploiyee).get();
-		List<CV> cvs= cVRepository.findAllByEmploiyee(emp);
+		AppUser emp =emploiyeeRepository.findById(idEmploiyee).get();
+		List<CV> cvs= cVRepository.findAllByUser(emp);
 		List<CvGlobale> cvToReturn=new ArrayList<CvGlobale>();
 		cvs.forEach((cv)->{
 				CvGlobale  cvg= new CvGlobale();
