@@ -17,6 +17,7 @@ import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.entites.Experiance;
 import com.KhadmaNdifa.service.CVService;
 import com.KhedmaNdifa.ParentEntities.Etatcivile;
+import com.KhedmaNdifa.ParentEntities.Gender;
 import com.KhedmaNdifa.ParentEntities.TypeUser;
 
 @SpringBootApplication
@@ -34,7 +35,7 @@ public class KhadmaNdifaApplication {
             accountService.save(new com.KhadmaNdifa.entites.AppRole(null,"ADMIN"));
             Stream.of("user1","user2","user3","admin").forEach(un->{
             	System.out.println("ajout de l'utilisteur : "+un);
-                accountService.saveUser(un,un+"@gmail.com",null,"1234","1234", TypeUser.EE);
+                accountService.saveUser(un,un+"@gmail.com",Gender.MALE,"1234","1234", TypeUser.EE);
             });
             accountService.addRoleToUser("admin","ADMIN");
             System.out.println("ajouter le rol Admin a l'utilistaue admin : ");

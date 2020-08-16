@@ -2,8 +2,6 @@ package com.KhadmaNdifa.web;
 
 
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,15 +49,17 @@ class UserForm{
     private String username;
     private Gender Gender;
     private String Email;
+	private String password;
+    private String confirmedPassword;
+    private TypeUser typeUser;
+    
     public Gender getGender() {
 		return Gender;
 	}
 	public void setGender(Gender gender) {
 		Gender = gender;
 	}
-	private String password;
-    private String confirmedPassword;
-    private TypeUser typeUser;
+
     
 	public String getEmail() {
 		return Email;
