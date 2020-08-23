@@ -93,7 +93,10 @@ private AppUserRepository emploiyeeRepository;
 
 	@Override
 	public void DeletAll() {
-		cVRepository.deleteAll();
+		this.deplomeRepository.deleteAll();
+		this.compitanceRepository.deleteAll();
+		this.experianceRepository.deleteAll();
+		this.cVRepository.deleteAll();
 		
 	}
 	// deplomes 

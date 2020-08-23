@@ -32,13 +32,7 @@ public class AppUser {
 		return "AppUser [id=" + id + ", username=" + username + ", Email=" + Email + ", Gender=" + gender +", password=" + password + ", actived=" + actived + "]";
 	}
 	
-	public TypeUser getTypeuser() {
-		return typeuser;
-	}
 
-	public void setTypeuser(TypeUser typeuser) {
-		this.typeuser = typeuser;
-	}
 
 	public AppUser(Long id, String username, String email, Gender gender, String password, boolean actived,TypeUser _typeuser) {
 		super();
@@ -90,6 +84,13 @@ public class AppUser {
 	}
 	public void setActived(boolean actived) {
 		this.actived = actived;
+	}
+	public TypeUser getTypeuser() {
+		return typeuser;
+	}
+
+	public void setTypeuser(TypeUser typeuser) {
+		this.typeuser = typeuser;
 	}
 	public Collection<AppRole> getRoles() {
 		return roles;

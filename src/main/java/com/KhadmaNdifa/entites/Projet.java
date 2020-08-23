@@ -1,10 +1,13 @@
 package com.KhadmaNdifa.entites;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -13,14 +16,23 @@ import javax.persistence.ManyToOne;
 
 import com.KhedmaNdifa.ParentEntities.AuditModel;
 import com.KhedmaNdifa.ParentEntities.EtatProjet;
+
+import antlr.collections.List;
 @Entity
 public class Projet extends AuditModel {
 @Id
+@GeneratedValue(strategy = GenerationType.AUTO)
 private long iD;
 private String description;
-@ManyToOne
-@JoinColumn(name = "idUser")
-private AppUser createdBy;
+private String detail;
+public String getDetail() {
+	return detail;
+}
+
+public void setDetail(String detail) {
+	this.detail = detail;
+}
+
 private Date datePostilation;
 //private String Description;
 
@@ -33,12 +45,12 @@ public Projet() {
 	super();
 }
 
-public Projet(long iD, String description, AppUser createdBy, Date datePostilation, Date dateFin, double budjet,
-		EtatProjet etat, double pourcentage, AppUser emploiyeur, Set<AppUser> emploiyees) {
+public Projet(long iD, String description,String detail, AppUser createdBy, Date datePostilation, Date dateFin, double budjet,
+		EtatProjet etat, double pourcentage, AppUser emploiyeur, java.util.List<AppUser> emploiyees) {
 	super();
 	this.iD = iD;
 	this.description = description;
-	this.createdBy = createdBy;
+	this.detail=detail;
 	this.datePostilation = datePostilation;
 	this.dateFin = dateFin;
 	this.budjet = budjet;
@@ -64,13 +76,6 @@ public void setDescription(String description) {
 	this.description = description;
 }
 
-public AppUser getCreatedBy() {
-	return createdBy;
-}
-
-public void setCreatedBy(AppUser createdBy) {
-	this.createdBy = createdBy;
-}
 
 public Date getDatePostilation() {
 	return datePostilation;
@@ -120,11 +125,11 @@ public void setEmploiyeur(AppUser emploiyeur) {
 	this.emploiyeur = emploiyeur;
 }
 
-public Set<AppUser> getEmploiyees() {
+public java.util.List<AppUser> getEmploiyees() {
 	return emploiyees;
 }
 
-public void setEmploiyees(Set<AppUser> emploiyees) {
+public void setEmploiyees(java.util.List<AppUser> emploiyees) {
 	this.emploiyees = emploiyees;
 }
 
@@ -140,6 +145,6 @@ joinColumns = {
 inverseJoinColumns = {
         @JoinColumn(name = "emploiyee_Id", referencedColumnName = "id",
                 nullable = false, updatable = false)})
-private Set<AppUser> emploiyees;
+private java.util.List<AppUser> emploiyees;
 
 }

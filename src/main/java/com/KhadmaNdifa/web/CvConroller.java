@@ -96,7 +96,7 @@ public class CvConroller {
 	  }
 
 	  @PutMapping("/update/{id}")
-	  ResponseEntity<CV> updateCV(@PathVariable("id") long id, @RequestBody CV cv) {
+	  ResponseEntity<CV> updateCV(@PathVariable(name ="id") long id, @RequestBody CV cv) {
 	    Optional<CV> cvData = cvService.FindById(id);
 	    if (cvData.isPresent()) {
 	      CV _cv = cvData.get();
