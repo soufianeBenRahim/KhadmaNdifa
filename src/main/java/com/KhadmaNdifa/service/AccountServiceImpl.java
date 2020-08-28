@@ -56,8 +56,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AppUser> loadUserByUsername(String username) {
-        return appUserRepository.findByUsername(username);
+    public List<AppUser>  loadUserByUsername(String username) {
+    	List<AppUser> usrs= appUserRepository.findByUsername(username);
+    	System.out.println("loadUserByUsername : "+usrs);
+    	return usrs;
     }
 
     @Override

@@ -35,7 +35,7 @@ public class JWTAuthorizationFiler extends OncePerRequestFilter {
         if(request.getMethod().equals("OPTIONS")){
             response.setStatus(HttpServletResponse.SC_OK);
         }
-        else if(request.getRequestURI().equals("/login")) {
+        else if(request.getRequestURI().equals("/login")   ) {
             filterChain.doFilter(request, response);
             return;
         }
