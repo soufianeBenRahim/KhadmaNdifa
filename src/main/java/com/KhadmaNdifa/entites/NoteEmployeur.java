@@ -14,7 +14,13 @@ public class NoteEmployeur extends AuditModel {
 @javax.persistence.Id
 @GeneratedValue(strategy = GenerationType.AUTO)
 private long Id;
-
+@Max(value = 5)
+private int note;
+@OneToOne
+private Projet projet;
+@ManyToOne
+@JoinColumn(name="id_Emploiyee")
+private AppUser emploiyee;
 
 public NoteEmployeur() {
 	super();
@@ -50,11 +56,5 @@ public AppUser getEmploiyee() {
 public void setEmploiyee(AppUser emploiyee) {
 	this.emploiyee = emploiyee;
 }
-@Max(value = 5)
-private int note;
-@OneToOne
-private Projet projet;
-@ManyToOne
-@JoinColumn(name="id_Emploiyee")
-private AppUser emploiyee;
+
 }

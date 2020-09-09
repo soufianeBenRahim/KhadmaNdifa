@@ -25,6 +25,36 @@ public class Projet extends AuditModel {
 private long iD;
 private String description;
 private String detail;
+private Date dateFin;
+private double budjet;
+private EtatProjet etat;
+private double pourcentage;
+@ManyToOne
+@JoinColumn(name = "id_emploiyeur")
+private AppUser emploiyeur;
+
+@ManyToOne
+@JoinColumn(name = "id_AceptedEmployee")
+private AppUser aceptedEmployee;
+
+public AppUser getAceptedEmployee() {
+	return aceptedEmployee;
+}
+
+public void setAceptedEmployee(AppUser aceptedEmployee) {
+	this.aceptedEmployee = aceptedEmployee;
+}
+
+@ManyToMany(fetch = FetchType.LAZY)
+@JoinTable(name = "PROJET_EMPLOIYEE",
+joinColumns = {
+        @JoinColumn(name = "id_Projet", referencedColumnName = "iD",
+                nullable = false, updatable = false)},
+inverseJoinColumns = {
+        @JoinColumn(name = "emploiyee_Id", referencedColumnName = "id",
+                nullable = false, updatable = false)})
+private java.util.List<AppUser> emploiyees;
+
 public String getDetail() {
 	return detail;
 }
@@ -36,17 +66,15 @@ public void setDetail(String detail) {
 private Date datePostilation;
 //private String Description;
 
-private Date dateFin;
-private double budjet;
-private EtatProjet etat;
-private double pourcentage;
+
 
 public Projet() {
 	super();
 }
 
 public Projet(long iD, String description,String detail, AppUser createdBy, Date datePostilation, Date dateFin, double budjet,
-		EtatProjet etat, double pourcentage, AppUser emploiyeur, java.util.List<AppUser> emploiyees) {
+		EtatProjet etat, double pourcentage, AppUser emploiyeur,
+		java.util.List<AppUser> emploiyees ,AppUser aceptedEmployee) {
 	super();
 	this.iD = iD;
 	this.description = description;
@@ -58,6 +86,7 @@ public Projet(long iD, String description,String detail, AppUser createdBy, Date
 	this.pourcentage = pourcentage;
 	this.emploiyeur = emploiyeur;
 	this.emploiyees = emploiyees;
+	this.aceptedEmployee=aceptedEmployee;
 }
 
 public long getiD() {
@@ -133,18 +162,6 @@ public void setEmploiyees(java.util.List<AppUser> emploiyees) {
 	this.emploiyees = emploiyees;
 }
 
-@ManyToOne
-@JoinColumn(name = "id_emploiyeur")
-private AppUser emploiyeur;
 
-@ManyToMany(fetch = FetchType.LAZY)
-@JoinTable(name = "PROJET_EMPLOIYEE",
-joinColumns = {
-        @JoinColumn(name = "id_Projet", referencedColumnName = "iD",
-                nullable = false, updatable = false)},
-inverseJoinColumns = {
-        @JoinColumn(name = "emploiyee_Id", referencedColumnName = "id",
-                nullable = false, updatable = false)})
-private java.util.List<AppUser> emploiyees;
 
 }
