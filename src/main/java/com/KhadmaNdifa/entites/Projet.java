@@ -22,7 +22,7 @@ import antlr.collections.List;
 public class Projet extends AuditModel {
 @Id
 @GeneratedValue(strategy = GenerationType.AUTO)
-private long iD;
+private long id;
 private String description;
 private String detail;
 private Date dateFin;
@@ -76,7 +76,7 @@ public Projet(long iD, String description,String detail, AppUser createdBy, Date
 		EtatProjet etat, double pourcentage, AppUser emploiyeur,
 		java.util.List<AppUser> emploiyees ,AppUser aceptedEmployee) {
 	super();
-	this.iD = iD;
+	this.id = iD;
 	this.description = description;
 	this.detail=detail;
 	this.datePostilation = datePostilation;
@@ -89,12 +89,12 @@ public Projet(long iD, String description,String detail, AppUser createdBy, Date
 	this.aceptedEmployee=aceptedEmployee;
 }
 
-public long getiD() {
-	return iD;
+public long getid() {
+	return id;
 }
 
-public void setiD(long iD) {
-	this.iD = iD;
+public void setid(long iD) {
+	this.id = iD;
 }
 
 public String getDescription() {

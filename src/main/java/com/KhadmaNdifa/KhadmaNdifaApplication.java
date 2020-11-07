@@ -25,7 +25,10 @@ import com.KhedmaNdifa.ParentEntities.Etatcivile;
 import com.KhedmaNdifa.ParentEntities.Gender;
 import com.KhedmaNdifa.ParentEntities.TypeUser;
 
+
+
 @SpringBootApplication
+
 public class KhadmaNdifaApplication {
 
 	public static void main(String[] args) {
@@ -140,4 +143,22 @@ public class KhadmaNdifaApplication {
     BCryptPasswordEncoder getBCPE(){
         return new BCryptPasswordEncoder();
     }
+    
+  /*  @Bean
+    public Docket api() { 
+        return new Docket(DocumentationType.SWAGGER_12)  
+          .select()                                  
+          .apis(RequestHandlerSelectors.basePackage("com.KhadmaNdifa.web"))              
+          .paths(PathSelectors.any())                          
+          .build()
+          .apiInfo(apiInfo());                                           
+    }
+    
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder().title("Library Spring Boot REST API Documentation")
+            .description("REST APIs For Khadma ndifa cite")
+            .contact(new Contact("Rahim soufiane", "https://github.com/soufianeBenRahim", "soubonoi@gmail.com"))
+            .version("1.0")
+            .build();
+    }*/
 }
