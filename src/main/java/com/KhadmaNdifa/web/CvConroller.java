@@ -1,6 +1,7 @@
 package com.KhadmaNdifa.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,13 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
-
+import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
 import com.KhadmaNdifa.entites.CvGlobale;
 import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.entites.Experiance;
+import com.KhadmaNdifa.service.AccountService;
 import com.KhadmaNdifa.service.CVService;
 
 
@@ -38,10 +39,12 @@ import com.KhadmaNdifa.service.CVService;
 public class CvConroller {
 
 	@Autowired
-	public CvConroller(CVService _cvService) {
+	public CvConroller(CVService _cvService,AccountService _accountSerice) {
 		this.cvService=_cvService;
+		this.acountservice=_accountSerice;
 	}
 	CVService cvService;
+	AccountService acountservice;
 	@GetMapping("/CVsUser")
 	ResponseEntity<List<CvGlobale>> getCVofUser(@RequestParam(required = false) Long id){
      	 try {
@@ -85,9 +88,12 @@ public class CvConroller {
 	    }
 	  }
 	
-	  @PostMapping("/")
-	  ResponseEntity<CV> createCV(@RequestBody CV cv) {
+	  @PostMapping("/createCV")
+	  ResponseEntity<CV> createCV(@RequestBody CV cv,long idUser) {
 	    try {
+	    	AppUser user=this.acountservice.GetUserByID(idUser);
+	    	cv.setUser(user);
+	    	cv.setCreatedAt(new Date());
 	      CV _cv = cvService.SaveCV(cv);
 	      return new ResponseEntity<>(_cv, HttpStatus.CREATED);
 	    } catch (Exception e) {
