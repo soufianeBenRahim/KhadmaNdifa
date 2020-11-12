@@ -6,5 +6,4 @@ import com.KhadmaNdifa.entites.Projet;
 
 public interface ProjetService {
 	List<Projet> getProjetByUser(long id);
-
 }

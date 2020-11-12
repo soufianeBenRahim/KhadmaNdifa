@@ -19,18 +19,19 @@ import java.util.Collection;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private AccountService accountService;
+	@Autowired
+	private AccountService accountService;
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	java.util.List<AppUser> appUse=accountService.loadUserByUsername(username);
-        if(appUse==null) throw new UsernameNotFoundException("invalid user");
-        Collection<GrantedAuthority> authorities=new ArrayList<>();
-        Collection<AppRole> roles =appUse.get(0).getRoles();
-        roles.forEach(r->{
-            authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
-        });
-        return new User(appUse.get(0).getUsername(),appUse.get(0).getPassword(),authorities);
-    }
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		java.util.List<AppUser> appUse = accountService.loadUserByUsername(username);
+		if (appUse == null)
+			throw new UsernameNotFoundException("invalid user");
+		Collection<GrantedAuthority> authorities = new ArrayList<>();
+		Collection<AppRole> roles = appUse.get(0).getRoles();
+		roles.forEach(r -> {
+			authorities.add(new SimpleGrantedAuthority(r.getRoleName()));
+		});
+		return new User(appUse.get(0).getUsername(), appUse.get(0).getPassword(), authorities);
+	}
 }

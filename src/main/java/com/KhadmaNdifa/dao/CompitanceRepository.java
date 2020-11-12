@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
+
 @Repository
-public interface CompitanceRepository extends JpaRepository<Compitance, Long>{
-public List<Compitance> findAllBycv(CV cv);
+public interface CompitanceRepository extends JpaRepository<Compitance, Long> {
+	public List<Compitance> findAllBycv(CV cv);
 }

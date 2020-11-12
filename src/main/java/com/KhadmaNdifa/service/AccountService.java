@@ -1,6 +1,5 @@
 package com.KhadmaNdifa.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.KhadmaNdifa.entites.AppRole;
