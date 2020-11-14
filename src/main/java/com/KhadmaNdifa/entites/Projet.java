@@ -13,9 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.KhedmaNdifa.ParentEntities.AuditModel;
 import com.KhedmaNdifa.ParentEntities.EtatProjet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import antlr.collections.List;
 
@@ -34,62 +37,21 @@ public class Projet extends AuditModel {
 	@JoinColumn(name = "id_emploiyeur")
 	private AppUser emploiyeur;
 
-	@ManyToOne
-	@JoinColumn(name = "id_AceptedEmployee")
-	private AppUser aceptedEmployee;
-
-	public AppUser getAceptedEmployee() {
-		return aceptedEmployee;
-	}
-
-	public void setAceptedEmployee(AppUser aceptedEmployee) {
-		this.aceptedEmployee = aceptedEmployee;
-	}
-
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "PROJET_EMPLOIYEE", joinColumns = {
-			@JoinColumn(name = "id_Projet", referencedColumnName = "iD", nullable = false, updatable = false) }, inverseJoinColumns = {
-					@JoinColumn(name = "emploiyee_Id", referencedColumnName = "id", nullable = false, updatable = false) })
-	private java.util.List<AppUser> emploiyees;
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
+	@OneToOne
+	@JoinColumn(name = "id_AcceptedDemande")
+	private DemandeRealisation acceptedDemande;
+@JsonIgnore
+	@OneToMany(mappedBy = "projet")
+	private java.util.List<DemandeRealisation> demandeRealisations;
 
 	private Date datePostilation;
-//private String Description;
 
-	public Projet() {
-		super();
-	}
-
-	public Projet(long iD, String description, String detail, AppUser createdBy, Date datePostilation, Date dateFin,
-			double budjet, EtatProjet etat, double pourcentage, AppUser emploiyeur, java.util.List<AppUser> emploiyees,
-			AppUser aceptedEmployee) {
-		super();
-		this.id = iD;
-		this.description = description;
-		this.detail = detail;
-		this.datePostilation = datePostilation;
-		this.dateFin = dateFin;
-		this.budjet = budjet;
-		this.etat = etat;
-		this.pourcentage = pourcentage;
-		this.emploiyeur = emploiyeur;
-		this.emploiyees = emploiyees;
-		this.aceptedEmployee = aceptedEmployee;
-	}
-
-	public long getid() {
+	public long getId() {
 		return id;
 	}
 
-	public void setid(long iD) {
-		this.id = iD;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
@@ -100,12 +62,12 @@ public class Projet extends AuditModel {
 		this.description = description;
 	}
 
-	public Date getDatePostilation() {
-		return datePostilation;
+	public String getDetail() {
+		return detail;
 	}
 
-	public void setDatePostilation(Date datePostilation) {
-		this.datePostilation = datePostilation;
+	public void setDetail(String detail) {
+		this.detail = detail;
 	}
 
 	public Date getDateFin() {
@@ -148,12 +110,49 @@ public class Projet extends AuditModel {
 		this.emploiyeur = emploiyeur;
 	}
 
-	public java.util.List<AppUser> getEmploiyees() {
-		return emploiyees;
+	public DemandeRealisation getAcceptedDemande() {
+		return acceptedDemande;
 	}
 
-	public void setEmploiyees(java.util.List<AppUser> emploiyees) {
-		this.emploiyees = emploiyees;
+	public void setAcceptedDemande(DemandeRealisation acceptedDemande) {
+		this.acceptedDemande = acceptedDemande;
+	}
+
+	public java.util.List<DemandeRealisation> getDemandeRealisations() {
+		return demandeRealisations;
+	}
+
+	public void setDemandeRealisations(java.util.List<DemandeRealisation> demandeRealisations) {
+		this.demandeRealisations = demandeRealisations;
+	}
+
+	public Date getDatePostilation() {
+		return datePostilation;
+	}
+
+	public void setDatePostilation(Date datePostilation) {
+		this.datePostilation = datePostilation;
+	}
+
+	public Projet(String description, String detail, Date dateFin, double budjet, EtatProjet etat, double pourcentage,
+			AppUser emploiyeur, DemandeRealisation acceptedDemande,
+			java.util.List<DemandeRealisation> demandeRealisations, Date datePostilation) {
+		super();
+		this.description = description;
+		this.detail = detail;
+		this.dateFin = dateFin;
+		this.budjet = budjet;
+		this.etat = etat;
+		this.pourcentage = pourcentage;
+		this.emploiyeur = emploiyeur;
+		this.acceptedDemande = acceptedDemande;
+		this.demandeRealisations = demandeRealisations;
+		this.datePostilation = datePostilation;
+	}
+
+	public Projet() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 }

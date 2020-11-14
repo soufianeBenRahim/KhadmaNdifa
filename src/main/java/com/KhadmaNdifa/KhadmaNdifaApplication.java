@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.KhadmaNdifa.dao.AppUserRepository;
+import com.KhadmaNdifa.dao.DemandeRealisationRepository;
 import com.KhadmaNdifa.dao.ProjetsRepositry;
 import com.KhadmaNdifa.entites.AppUser;
 import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.Compitance;
+import com.KhadmaNdifa.entites.DemandeRealisation;
 import com.KhadmaNdifa.entites.Deplome;
 import com.KhadmaNdifa.entites.Experiance;
 import com.KhadmaNdifa.entites.Projet;
@@ -34,7 +36,8 @@ public class KhadmaNdifaApplication {
 
 	@Bean
 	CommandLineRunner start(com.KhadmaNdifa.service.AccountService accountService, CVService cvService,
-			AppUserRepository emploiyeeRepository, ProjetsRepositry projetRepository) {
+			AppUserRepository emploiyeeRepository, ProjetsRepositry projetRepository
+			,DemandeRealisationRepository demandeRealisationRepository) {
 		return args -> {
 			cvService.DeletAll();
 			projetRepository.deleteAll();
@@ -112,7 +115,7 @@ public class KhadmaNdifaApplication {
 				accountService.saveUser(un, un + "@gmail.com", Gender.MALE, "123456", "123456", TypeUser.EUR);
 			});
 			List<AppUser> emploiyeur = emploiyeeRepository.findByUsername("emploiyeur1");
-
+			
 			Projet p = new Projet();
 			p.setBudjet(1000);
 			p.setCreatedAt(new Date());
@@ -125,6 +128,7 @@ public class KhadmaNdifaApplication {
 			p.setEmploiyeur(emploiyeur.get(0));
 
 			projetRepository.save(p);
+			
 			System.out.println("ajout nd u projet 1");
 			Projet p2 = new Projet();
 			p2.setBudjet(3000);
@@ -136,9 +140,16 @@ public class KhadmaNdifaApplication {
 					"en est  a la recherche d'un mason califier qui a construit deja des cuisine de qualite a buidjet concidirable");
 			p2.setEtat(EtatProjet.LANCEMMENT);
 			p2.setEmploiyeur(emploiyeur.get(0));
-			p2.setEmploiyees(emps);
-			projetRepository.save(p2);
+			p2=projetRepository.save(p2);
 			System.out.println("ajout nd u projet 2");
+			List<AppUser> emploiyee = emploiyeeRepository.findByUsername("user1");
+			DemandeRealisation demande1 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
+			demande1.setCreatedAt(new Date());
+			demandeRealisationRepository.save(demande1);
+			List<AppUser> emploiyee2 = emploiyeeRepository.findByUsername("user2");
+			DemandeRealisation demande2 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
+			demande2.setCreatedAt(new Date());
+			demandeRealisationRepository.save(demande2);
 		};
 	}
 

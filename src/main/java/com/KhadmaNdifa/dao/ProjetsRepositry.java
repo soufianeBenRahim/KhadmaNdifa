@@ -10,9 +10,9 @@ import com.KhadmaNdifa.entites.Projet;
 
 @Repository
 public interface ProjetsRepositry extends JpaRepository<Projet, Long> {
-	@Query("select p from Projet p where emploiyeur.id= ?1")
+	@Query("select p from Projet p where p.emploiyeur.id= ?1")
 	public List<Projet> finByEmploiyeur(long id);
 
-	@Query("select p from Projet p left join p.emploiyees u where u.id= ?1")
+	@Query("select p from Projet p inner join DemandeRealisation d on d.projet.id=p.id where d.demandeur.id= ?1")
 	public List<Projet> finByEmploiye(long id);
 }

@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.KhadmaNdifa.dao.AppUserRepository;
+import com.KhadmaNdifa.dao.DemandeRealisationRepository;
 import com.KhadmaNdifa.dao.ProjetsRepositry;
 import com.KhadmaNdifa.entites.AppUser;
+import com.KhadmaNdifa.entites.DemandeRealisation;
 import com.KhadmaNdifa.entites.Projet;
 import com.KhadmaNdifa.service.AccountServiceImpl;
 import com.KhedmaNdifa.ParentEntities.EtatProjet;
@@ -29,6 +32,9 @@ public class ProjetsController {
 	ProjetsRepositry projetRepository;
 	@Autowired
 	AccountServiceImpl accountservice;
+	
+	@Autowired
+	DemandeRealisationRepository demanderealisationRepository;
 
 	@GetMapping("/projets")
 	public ResponseEntity<List<Projet>> getAllProjet() {
@@ -82,11 +88,10 @@ public class ProjetsController {
 	}
 
 	@PutMapping("/updateProjet")
-
 	public ResponseEntity<Projet> updateProjet(@RequestBody Projet proj) {
 
-		long id = proj.getid();
-		Optional<Projet> pp = projetRepository.findById(proj.getid());
+		long id = proj.getId();
+		Optional<Projet> pp = projetRepository.findById(proj.getId());
 		if (pp.isEmpty()) {
 			return new ResponseEntity<Projet>(HttpStatus.NOT_FOUND);
 		} else {
@@ -102,6 +107,30 @@ public class ProjetsController {
 				return new ResponseEntity<Projet>(projet, HttpStatus.CREATED);
 			}
 			return new ResponseEntity<Projet>(HttpStatus.NOT_MODIFIED);
+		}
+
+	}
+	
+	@PutMapping("/addDemandeToProject")
+	public ResponseEntity<DemandeRealisation> AddDemandeToProject(@RequestBody DemandeRealisation demande,long idProject,long idUser) {
+
+		
+		Optional<Projet> pp = projetRepository.findById(idProject);
+		if (pp.isEmpty()) {
+			return new ResponseEntity<DemandeRealisation>(HttpStatus.NOT_FOUND);
+		} else {
+			DemandeRealisation demandeRealisation= new DemandeRealisation();
+			demandeRealisation.setProjet(pp.get());
+			demandeRealisation.setCreatedAt(new Date());
+			AppUser user = accountservice.GetUserByID(idUser);
+			demandeRealisation.setDemandeur(user);
+			demandeRealisation=demanderealisationRepository.save(demandeRealisation);
+
+			if (demandeRealisation != null) {
+
+				return new ResponseEntity<DemandeRealisation>(demandeRealisation, HttpStatus.CREATED);
+			}
+			return new ResponseEntity<DemandeRealisation>(HttpStatus.NOT_MODIFIED);
 		}
 
 	}
