@@ -59,15 +59,15 @@ public class ProjetsController {
 
 	@PostMapping("/addprojet")
 
-	public ResponseEntity<Projet> createNewCustomer(@RequestBody Projet proj, @RequestParam long iduser) {
+	public ResponseEntity<Projet> addprojet(@RequestBody Projet proj, @RequestParam long iduser) {
 		AppUser user = accountservice.GetUserByID(iduser);
 		if (user != null) {
 			proj.setCreatedAt(new Date());
-			proj.setUpdatedAt(new Date());
 			proj.setDatePostilation(new Date());
 			proj.setEmploiyeur(user);
 			proj.setEtat(EtatProjet.LANCEMMENT);
 			proj.setPourcentage(0);
+			proj.setBudjet(proj.getBudjet());
 			Projet p = projetRepository.save(proj);
 
 			if (p != null) {
