@@ -103,6 +103,7 @@ public class CvConroller {
 			_cv.setTel(cv.getTel());
 			_cv.setAdress(cv.getAdress());
 			_cv.setEtatcivile(cv.getEtatcivile());
+			_cv.setDesignationCV(cv.getDesignationCV());
 			_cv = cvService.SaveCV(_cv);
 			return new ResponseEntity<>(_cv, HttpStatus.OK);
 		} else {

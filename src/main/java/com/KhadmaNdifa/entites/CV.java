@@ -44,10 +44,6 @@ public class CV extends AuditModel {
 	private String nom;
 	private String prenom;
 	private String adress;
-	// @ManyToMany(fetch = FetchType.EAGER)
-	// private Collection<Experiance> experiances=new ArrayList<>();
-	// @ManyToMany(fetch = FetchType.EAGER)
-	// private Collection<Compitance> compitances=new ArrayList<>();
 
 	public CV() {
 		super();
@@ -135,7 +131,6 @@ public class CV extends AuditModel {
 	private String Tel;
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	@JsonIgnore
 	@JoinColumn(name = "id_Emploiyee", nullable = false)
 	private AppUser user;
 
