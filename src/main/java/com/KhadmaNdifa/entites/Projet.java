@@ -40,7 +40,7 @@ public class Projet extends AuditModel {
 	@OneToOne
 	@JoinColumn(name = "id_AcceptedDemande")
 	private DemandeRealisation acceptedDemande;
-@JsonIgnore
+
 	@OneToMany(mappedBy = "projet")
 	private java.util.List<DemandeRealisation> demandeRealisations;
 

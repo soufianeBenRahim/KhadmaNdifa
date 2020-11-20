@@ -150,6 +150,8 @@ public class KhadmaNdifaApplication {
 			DemandeRealisation demande2 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
 			demande2.setCreatedAt(new Date());
 			demandeRealisationRepository.save(demande2);
+			p2.setAcceptedDemande(demande2);
+			p2=projetRepository.save(p2);
 		};
 	}
 

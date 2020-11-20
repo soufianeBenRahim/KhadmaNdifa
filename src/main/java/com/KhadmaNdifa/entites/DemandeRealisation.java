@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.KhedmaNdifa.ParentEntities.AuditModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class DemandeRealisation extends AuditModel{
@@ -15,6 +16,7 @@ public class DemandeRealisation extends AuditModel{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	private String detailDemmande;
+	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "id_Projet")
 	private Projet projet;

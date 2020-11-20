@@ -13,6 +13,6 @@ public interface ProjetsRepositry extends JpaRepository<Projet, Long> {
 	@Query("select p from Projet p where p.emploiyeur.id= ?1")
 	public List<Projet> finByEmploiyeur(long id);
 
-	@Query("select p from Projet p inner join DemandeRealisation d on d.projet.id=p.id where d.demandeur.id= ?1")
+	@Query("select p from Projet p where p.acceptedDemande.demandeur.id= ?1")
 	public List<Projet> finByEmploiye(long id);
 }
