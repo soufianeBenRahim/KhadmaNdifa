@@ -1,10 +1,5 @@
 package com.KhadmaNdifa.entites;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,18 +7,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import com.KhedmaNdifa.ParentEntities.AuditModel;
-import com.KhedmaNdifa.ParentEntities.Etatcivile;;
+import com.KhedmaNdifa.ParentEntities.Etatcivile;
+import com.fasterxml.jackson.annotation.JsonIgnore;;
 
 @Entity
 public class CV extends AuditModel {
@@ -129,7 +120,7 @@ public class CV extends AuditModel {
 
 	private String email;
 	private String Tel;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@JoinColumn(name = "id_Emploiyee", nullable = false)
 	private AppUser user;

@@ -83,6 +83,7 @@ public class CvConroller {
 	ResponseEntity<CV> createCV(@RequestBody CV cv, long idUser) {
 		try {
 			AppUser user = this.acountservice.GetUserByID(idUser);
+	
 			cv.setUser(user);
 			cv.setCreatedAt(new Date());
 			CV _cv = cvService.SaveCV(cv);
@@ -111,7 +112,8 @@ public class CvConroller {
 		}
 	}
 
-	@DeleteMapping("/{id}")
+
+	@DeleteMapping("/{id}/delete")
 	ResponseEntity<HttpStatus> deleteCv(@PathVariable("id") long id) {
 		try {
 			cvService.DeleteCVById(id);

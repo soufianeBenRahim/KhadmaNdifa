@@ -140,7 +140,7 @@ public class KhadmaNdifaApplication {
 					"en est  a la recherche d'un mason califier qui a construit deja des cuisine de qualite a buidjet concidirable");
 			p2.setEtat(EtatProjet.LANCEMMENT);
 			p2.setEmploiyeur(emploiyeur.get(0));
-			p2=projetRepository.save(p2);
+ 			p2=projetRepository.save(p2);
 			System.out.println("ajout nd u projet 2");
 			List<AppUser> emploiyee = emploiyeeRepository.findByUsername("user1");
 			DemandeRealisation demande1 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
