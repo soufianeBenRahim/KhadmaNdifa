@@ -63,7 +63,7 @@ public class KhadmaNdifaApplication {
 			newCv.setUser(emps.get(0));
 			newCv.setEtatcivile(Etatcivile.CELEBATAIRE);
 			newCv.setTel("0666666666");
-			cvService.SaveCV(newCv);
+			newCv=cvService.SaveCV(newCv);
 			CV newCv2 = new CV();
 			newCv2.setNom("rahim2");
 			newCv2.setPrenom("Soufiane2");
@@ -73,10 +73,9 @@ public class KhadmaNdifaApplication {
 			newCv2.setCreatedAt(new Date());
 			newCv2.setUpdatedAt(new Date());
 			newCv2.setUser(emps.get(0));
-			;
 			newCv2.setEtatcivile(Etatcivile.MARIEE);
 			newCv2.setTel("066666666622");
-			cvService.SaveCV(newCv2);
+			newCv2=cvService.SaveCV(newCv2);
 			Deplome deplome = new Deplome();
 			deplome.setAnnee(2020);
 			deplome.setDescription("DEUA inforamtique");
@@ -142,13 +141,14 @@ public class KhadmaNdifaApplication {
 			p2.setEmploiyeur(emploiyeur.get(0));
  			p2=projetRepository.save(p2);
 			System.out.println("ajout nd u projet 2");
-			List<AppUser> emploiyee = emploiyeeRepository.findByUsername("user1");
-			DemandeRealisation demande1 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
+			List<AppUser> emploiyee = emploiyeeRepository.findByUsername("admin");
+			DemandeRealisation demande1 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0),1000.00,newCv);
 			demande1.setCreatedAt(new Date());
 			demandeRealisationRepository.save(demande1);
 			List<AppUser> emploiyee2 = emploiyeeRepository.findByUsername("user2");
-			DemandeRealisation demande2 =new DemandeRealisation("Demande de user 1",p2, emploiyee.get(0));
+			DemandeRealisation demande2 =new DemandeRealisation("Demande de user 1",p2, emploiyee2.get(0),2000.00,null);
 			demande2.setCreatedAt(new Date());
+			
 			demandeRealisationRepository.save(demande2);
 			p2.setAcceptedDemande(demande2);
 			p2=projetRepository.save(p2);

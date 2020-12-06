@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.KhadmaNdifa.dao.AppUserRepository;
+import com.KhadmaNdifa.dao.CVsRepository;
 import com.KhadmaNdifa.dao.DemandeRealisationRepository;
 import com.KhadmaNdifa.dao.ProjetsRepositry;
 import com.KhadmaNdifa.entites.AppUser;
+import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.DemandeRealisation;
 import com.KhadmaNdifa.entites.Projet;
 import com.KhadmaNdifa.service.AccountServiceImpl;
@@ -36,6 +37,9 @@ public class ProjetsController {
 	@Autowired
 	DemandeRealisationRepository demanderealisationRepository;
 
+	@Autowired
+	com.KhadmaNdifa.service.CVService CVService ;
+	
 	@GetMapping("/projets")
 	public ResponseEntity<List<Projet>> getAllProjet() {
 		List<Projet> projs = projetRepository.findAll();
@@ -111,11 +115,12 @@ public class ProjetsController {
 
 	}
 	
-	@PutMapping("/addDemandeToProject")
-	public ResponseEntity<DemandeRealisation> AddDemandeToProject(@RequestBody DemandeRealisation demande,long idProject,long idUser) {
+	@PostMapping("/addDemandeToProject")
+	public ResponseEntity<DemandeRealisation> AddDemandeToProject(@RequestBody DemandeRealisation demande
+			,@RequestParam long idProjet,@RequestParam long idUser,@RequestParam Optional<Long> idcv) {
 
 		
-		Optional<Projet> pp = projetRepository.findById(idProject);
+		Optional<Projet> pp = projetRepository.findById(idProjet);
 		if (pp.isEmpty()) {
 			return new ResponseEntity<DemandeRealisation>(HttpStatus.NOT_FOUND);
 		} else {
@@ -124,6 +129,11 @@ public class ProjetsController {
 			demandeRealisation.setCreatedAt(new Date());
 			AppUser user = accountservice.GetUserByID(idUser);
 			demandeRealisation.setDemandeur(user);
+			if(idcv.isPresent()) {
+				Optional<CV> cv=CVService.FindById(idcv.get());
+				if(!cv.isEmpty())
+					demandeRealisation.setCv(cv.get());
+			}
 			demandeRealisation=demanderealisationRepository.save(demandeRealisation);
 
 			if (demandeRealisation != null) {
@@ -133,6 +143,25 @@ public class ProjetsController {
 			return new ResponseEntity<DemandeRealisation>(HttpStatus.NOT_MODIFIED);
 		}
 
+	}
+	
+	@PostMapping("/acceptDemandeInProjet")
+	public ResponseEntity<HttpStatus> acceptDemandeInProjet(
+			@RequestParam long idprojet,@RequestParam long iddemmande) {
+
+		Optional<Projet> pp = projetRepository.findById(idprojet);
+		if (pp.isEmpty()) {
+			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+		} else {
+			Optional<DemandeRealisation> demandeRealisation =demanderealisationRepository.findById(iddemmande);
+			if(demandeRealisation.isEmpty()) {
+				return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+			}else {
+				pp.get().setAcceptedDemande(demandeRealisation.get());
+				projetRepository.save(pp.get());
+				return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+			}
+		}
 	}
 
 }

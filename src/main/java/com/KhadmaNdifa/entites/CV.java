@@ -14,7 +14,6 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.KhedmaNdifa.ParentEntities.AuditModel;
 import com.KhedmaNdifa.ParentEntities.Etatcivile;
-import com.fasterxml.jackson.annotation.JsonIgnore;;
 
 @Entity
 public class CV extends AuditModel {

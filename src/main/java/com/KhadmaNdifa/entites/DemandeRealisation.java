@@ -1,6 +1,7 @@
 package com.KhadmaNdifa.entites;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +24,24 @@ public class DemandeRealisation extends AuditModel{
 	@ManyToOne
 	@JoinColumn(name = "id_demandeur")
 	private AppUser demandeur; 
+	private double proposition;
+
+	public double getProposition() {
+		return proposition;
+	}
+	public void setProposition(double proposition) {
+		this.proposition = proposition;
+	}
+	public CV getCv() {
+		return cv;
+	}
+	public void setCv(CV cv) {
+		this.cv = cv;
+	}
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.EAGER,optional =true)
+	@JoinColumn(name = "id_cv")
+	private CV cv; 
 
 	public long getId() {
 		return id;
@@ -48,16 +67,18 @@ public class DemandeRealisation extends AuditModel{
 	public void setDemandeur(AppUser demandeur) {
 		this.demandeur = demandeur;
 	}
-	public DemandeRealisation( String detailDemmande, Projet projet,AppUser demandeur) {
+	public DemandeRealisation( String detailDemmande, Projet projet, AppUser demandeur, double proposition,
+			CV cv) {
 		super();
 		this.detailDemmande = detailDemmande;
 		this.projet = projet;
-		this.demandeur=demandeur;
-	}
-	public DemandeRealisation() {
-		super();
-		// TODO Auto-generated constructor stub
+		this.demandeur = demandeur;
+		this.proposition = proposition;
+		this.cv = cv;
 	}
 	
+	public DemandeRealisation() {
+		super();
+	}
 	
 }
