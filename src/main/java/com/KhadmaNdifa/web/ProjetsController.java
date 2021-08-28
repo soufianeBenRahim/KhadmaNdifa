@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,26 +24,24 @@ import com.KhadmaNdifa.entites.CV;
 import com.KhadmaNdifa.entites.DemandeRealisation;
 import com.KhadmaNdifa.entites.Projet;
 import com.KhadmaNdifa.service.AccountServiceImpl;
+import com.KhadmaNdifa.service.ProjetService;
 import com.KhedmaNdifa.ParentEntities.EtatProjet;
 import com.KhedmaNdifa.ParentEntities.TypeUser;
 
 @RestController
 public class ProjetsController {
-
 	@Autowired
-	ProjetsRepositry projetRepository;
+	ProjetService projetService;
 	@Autowired
 	AccountServiceImpl accountservice;
 	
-	@Autowired
-	DemandeRealisationRepository demanderealisationRepository;
 
 	@Autowired
 	com.KhadmaNdifa.service.CVService CVService ;
 	
 	@GetMapping("/projets")
 	public ResponseEntity<List<Projet>> getAllProjet() {
-		List<Projet> projs = projetRepository.findAll();
+		List<Projet> projs = projetService.findAllProjects();
 
 		if (!CollectionUtils.isEmpty(projs)) {
 			return new ResponseEntity<List<Projet>>(projs, HttpStatus.OK);
@@ -55,9 +54,9 @@ public class ProjetsController {
 		AppUser user = accountservice.GetUserByID(id);
 		List<Projet> projets = null;
 		if (user != null && user.getTypeuser() == TypeUser.EUR) {
-			projets = projetRepository.finByEmploiyeur(id);
+			projets = projetService.finByEmploiyeur(id);
 		} else {
-			projets = projetRepository.finByEmploiye(id);
+			projets = projetService.finByEmploiye(id);
 		}
 		if (projets != null) {
 			return new ResponseEntity<List<Projet>>(projets, HttpStatus.OK);
@@ -78,7 +77,7 @@ public class ProjetsController {
 			proj.setEtat(EtatProjet.LANCEMMENT);
 			proj.setPourcentage(0);
 			proj.setBudjet(proj.getBudjet());
-			Projet p = projetRepository.save(proj);
+			Projet p = projetService.save(proj);
 
 			if (p != null) {
 
@@ -95,7 +94,7 @@ public class ProjetsController {
 	public ResponseEntity<Projet> updateProjet(@RequestBody Projet proj) {
 
 		long id = proj.getId();
-		Optional<Projet> pp = projetRepository.findById(proj.getId());
+		Optional<Projet> pp = projetService.findById(proj.getId());
 		if (pp.isEmpty()) {
 			return new ResponseEntity<Projet>(HttpStatus.NOT_FOUND);
 		} else {
@@ -104,7 +103,7 @@ public class ProjetsController {
 			projet.setDescription(proj.getDescription());
 			projet.setDetail(proj.getDetail());
 			projet.setBudjet(proj.getBudjet());
-			projet = projetRepository.save(projet);
+			projet = projetService.save(projet);
 
 			if (projet != null) {
 
@@ -117,10 +116,10 @@ public class ProjetsController {
 	
 	@PostMapping("/addDemandeToProject")
 	public ResponseEntity<DemandeRealisation> AddDemandeToProject(@RequestBody DemandeRealisation demande
-			,@RequestParam long idProjet,@RequestParam long idUser,@RequestParam Optional<Long> idcv) {
+			,@RequestParam long idProjet,@RequestParam long idUser,@RequestParam Optional<Long> idcv, @RequestHeader (name="Authorization") String token) {
 
 		
-		Optional<Projet> pp = projetRepository.findById(idProjet);
+		Optional<Projet> pp = projetService.findById(idProjet);
 		if (pp.isEmpty()) {
 			return new ResponseEntity<DemandeRealisation>(HttpStatus.NOT_FOUND);
 		} else {
@@ -134,8 +133,8 @@ public class ProjetsController {
 				if(!cv.isEmpty())
 					demandeRealisation.setCv(cv.get());
 			}
-			demandeRealisation=demanderealisationRepository.save(demandeRealisation);
-
+			demandeRealisation=projetService.saveDemandeRealisation(demandeRealisation);
+String tok=token;
 			if (demandeRealisation != null) {
 
 				return new ResponseEntity<DemandeRealisation>(demandeRealisation, HttpStatus.CREATED);
@@ -149,16 +148,16 @@ public class ProjetsController {
 	public ResponseEntity<HttpStatus> acceptDemandeInProjet(
 			@RequestParam long idprojet,@RequestParam long iddemmande) {
 
-		Optional<Projet> pp = projetRepository.findById(idprojet);
+		Optional<Projet> pp = projetService.findById(idprojet);
 		if (pp.isEmpty()) {
 			return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 		} else {
-			Optional<DemandeRealisation> demandeRealisation =demanderealisationRepository.findById(iddemmande);
+			Optional<DemandeRealisation> demandeRealisation =projetService.findDEmandeRealisationById(iddemmande);
 			if(demandeRealisation.isEmpty()) {
 				return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
 			}else {
 				pp.get().setAcceptedDemande(demandeRealisation.get());
-				projetRepository.save(pp.get());
+				projetService.save(pp.get());
 				return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 			}
 		}
